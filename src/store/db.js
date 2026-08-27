@@ -33,7 +33,12 @@ export const db = {
       name: user.name,
       email: user.email,
       business: user.business,
+      role: user.role || 'worker',
     })
+  },
+
+  isAdmin() {
+    return this.getSession()?.role === 'admin'
   },
 
   logout() {
@@ -41,7 +46,28 @@ export const db = {
   },
 
   getUsers() {
-    return read(KEYS.users, [])
+    return read(KEYS.users, []).map((user) => ({
+      ...user,
+      role: user.role || 'worker',
+    }))
+  },
+
+  getUser(id) {
+    return this.getUsers().find((u) => u.id === id) || null
+  },
+
+  workers() {
+    return this.getUsers()
+      .filter((u) => u.role !== 'admin')
+      .sort((a, b) => a.name.localeCompare(b.name, 'es'))
+  },
+
+  updateUser(user) {
+    const users = read(KEYS.users, [])
+    const index = users.findIndex((u) => u.id === user.id)
+    if (index < 0) return
+    users[index] = { ...users[index], ...user }
+    write(KEYS.users, users)
   },
 
   register({ name, email, password, business }) {
@@ -55,6 +81,7 @@ export const db = {
       email: email.trim().toLowerCase(),
       password,
       business: business.trim(),
+      role: 'worker',
       createdAt: Date.now(),
     }
     users.push(user)
@@ -74,16 +101,27 @@ export const db = {
     return user
   },
 
-  products() {
-    const session = this.getSession()
-    if (!session) return []
+  productsOf(userId) {
     return read(KEYS.products, [])
-      .filter((p) => p.userId === session.id)
+      .filter((p) => p.userId === userId)
       .sort((a, b) => a.name.localeCompare(b.name, 'es'))
   },
 
+  products() {
+    const session = this.getSession()
+    if (!session) return []
+    if (this.isAdmin()) {
+      return read(KEYS.products, []).sort((a, b) => a.name.localeCompare(b.name, 'es'))
+    }
+    return this.productsOf(session.id)
+  },
+
   getProduct(id) {
-    return this.products().find((p) => p.id === id) || null
+    const product = read(KEYS.products, []).find((p) => p.id === id) || null
+    if (!product) return null
+    const session = this.getSession()
+    if (this.isAdmin()) return product
+    return product.userId === session?.id ? product : null
   },
 
   saveProduct(data) {
@@ -136,7 +174,20 @@ export const db = {
     write(KEYS.products, all)
   },
 
+  lowStockOf(userId) {
+    return this.productsOf(userId).filter((p) => p.stock <= p.minStock)
+  },
+
   lowStock() {
+    if (this.isAdmin()) {
+      return this.workers().flatMap((worker) =>
+        this.lowStockOf(worker.id).map((p) => ({
+          ...p,
+          workerName: worker.name,
+          workerBusiness: worker.business,
+        })),
+      )
+    }
     return this.products().filter((p) => p.stock <= p.minStock)
   },
 
@@ -160,12 +211,29 @@ export const db = {
     write(KEYS.alertsSeen, this.lowStock().map((p) => p.id))
   },
 
+  salesOf(userId) {
+    return read(KEYS.sales, [])
+      .filter((s) => s.userId === userId)
+      .sort((a, b) => b.createdAt - a.createdAt)
+  },
+
   sales() {
     const session = this.getSession()
     if (!session) return []
-    return read(KEYS.sales, [])
-      .filter((s) => s.userId === session.id)
-      .sort((a, b) => b.createdAt - a.createdAt)
+    const withWorker = (sale) => {
+      const worker = this.getUser(sale.userId)
+      return {
+        ...sale,
+        workerName: worker?.name || 'Trabajador',
+        workerBusiness: worker?.business || '',
+      }
+    }
+    if (this.isAdmin()) {
+      return read(KEYS.sales, [])
+        .map(withWorker)
+        .sort((a, b) => b.createdAt - a.createdAt)
+    }
+    return this.salesOf(session.id).map(withWorker)
   },
 
   getSale(id) {
@@ -220,23 +288,68 @@ export const db = {
   getDayGoal() {
     const session = this.getSession()
     if (!session) return 0
+    return this.dayGoalOf(session.id)
+  },
+
+  dayGoalOf(userId) {
     const goals = read(KEYS.dayGoals, {})
-    return Number(goals[session.id]) || 0
+    return Number(goals[userId]) || 0
   },
 
   setDayGoal(amount) {
     const session = this.getSession()
     if (!session) return
+    return this.setDayGoalFor(session.id, amount)
+  },
+
+  setDayGoalFor(userId, amount) {
     const goals = read(KEYS.dayGoals, {})
     const value = parseAmount(amount)
-    if (value) goals[session.id] = value
-    else delete goals[session.id]
+    if (value) goals[userId] = value
+    else delete goals[userId]
     write(KEYS.dayGoals, goals)
     return value
   },
 
+  workerSnapshot(userId) {
+    const user = this.getUser(userId)
+    if (!user || user.role === 'admin') return null
+    const stats = this.dayStatsOf(userId)
+    const goal = this.dayGoalOf(userId)
+    const products = this.productsOf(userId)
+    const alerts = this.lowStockOf(userId)
+    const sales = this.salesOf(userId)
+    return {
+      user,
+      stats,
+      goal,
+      pct: goal ? Math.min(100, Math.round((stats.total / goal) * 100)) : 0,
+      products,
+      alerts,
+      sales,
+    }
+  },
+
+  teamOverview() {
+    const workers = this.workers().map((w) => this.workerSnapshot(w.id)).filter(Boolean)
+    return {
+      workers,
+      todayTotal: workers.reduce((sum, w) => sum + w.stats.total, 0),
+      todayCount: workers.reduce((sum, w) => sum + w.stats.count, 0),
+      todayUnits: workers.reduce((sum, w) => sum + w.stats.units, 0),
+      alerts: workers.reduce((sum, w) => sum + w.alerts.length, 0),
+    }
+  },
+
+  dayStatsOf(userId) {
+    return this._statsFromSales(this.salesOf(userId).filter((s) => s.createdAt >= startOfDay()))
+  },
+
   dayStats() {
-    const sales = this.salesToday()
+    return this._statsFromSales(this.salesToday())
+  },
+
+  _statsFromSales(sales) {
     const total = sales.reduce((sum, s) => sum + s.total, 0)
     const units = sales.reduce((sum, s) => sum + s.units, 0)
     const counts = {}
