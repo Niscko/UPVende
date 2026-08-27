@@ -63,18 +63,20 @@
 }
 
 .sale {
-  padding-bottom: 90px;
+  padding-bottom: 132px;
 }
 
 .sale-bar {
   @include card;
   @include flex-between;
-  position: sticky;
-  bottom: calc(#{$tabbar-h} + 10px);
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(#{$tabbar-h} + 12px);
   padding: 12px;
   gap: 12px;
   background: $white;
-  z-index: 4;
+  z-index: 6;
 
   p {
     color: $umber;
@@ -105,6 +107,22 @@
   &.is-out {
     color: $danger;
   }
+}
+
+.price-btn {
+  margin-top: 6px;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $accent-dark;
+  text-decoration: underline;
+}
+
+.price-custom {
+  color: $accent;
+  font-weight: 700;
 }
 
 .bars {
