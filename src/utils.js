@@ -57,7 +57,7 @@ export function greeting() {
 
 export function categoryLabel(key) {
   const map = {
-    postres: 'Postres',
+    comida: 'Comida',
     ropa: 'Ropa',
     accesorios: 'Accesorios',
     otro: 'Otro',

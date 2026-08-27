@@ -11,12 +11,12 @@ export default {
     const isNew = params.id === 'nuevo'
     const product = isNew ? null : db.getProduct(params.id)
     if (!isNew && !product) return `<section class="page empty"><p>Producto no encontrado.</p></section>`
-    const p = product || { name: '', category: 'postres', price: '', stock: '', minStock: 3, unit: 'und' }
+    const p = product || { name: '', category: 'comida', price: '', stock: '', minStock: 3, unit: 'und' }
     return `
       <section class="page">
         <form class="form" id="product-form">
           <label>Nombre<input name="name" required maxlength="50" value="${escapeHtml(p.name)}" placeholder="Brownie de chocolate" /></label>
-          <label>Categoría<select name="category">${['postres', 'ropa', 'accesorios', 'otro'].map((cat) => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryLabel(cat)}</option>`).join('')}</select></label>
+          <label>Categoría<select name="category">${['comida', 'ropa', 'accesorios', 'otro'].map((cat) => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryLabel(cat)}</option>`).join('')}</select></label>
           <div class="form-row">
             <label>Precio (COP)<input name="price" type="number" min="0" step="100" required value="${p.price}" /></label>
             <label>Unidad<select name="unit">${['und', 'paq', 'par', 'caja'].map((unit) => `<option value="${unit}" ${p.unit === unit ? 'selected' : ''}>${unit}</option>`).join('')}</select></label>

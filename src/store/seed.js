@@ -7,9 +7,9 @@ export const DEMO = {
 }
 
 const sampleProducts = [
-  { name: 'Brownie de chocolate', category: 'postres', price: 8000, stock: 12, minStock: 4, unit: 'und' },
-  { name: 'Cheesecake de frutos', category: 'postres', price: 12000, stock: 6, minStock: 3, unit: 'und' },
-  { name: 'Galletas de avena x4', category: 'postres', price: 4500, stock: 24, minStock: 8, unit: 'paq' },
+  { name: 'Brownie de chocolate', category: 'comida', price: 8000, stock: 12, minStock: 4, unit: 'und' },
+  { name: 'Cheesecake de frutos', category: 'comida', price: 12000, stock: 6, minStock: 3, unit: 'und' },
+  { name: 'Galletas de avena x4', category: 'comida', price: 4500, stock: 24, minStock: 8, unit: 'paq' },
   { name: 'Camiseta oversized', category: 'ropa', price: 45000, stock: 8, minStock: 3, unit: 'und' },
   { name: 'Tote bag de lona', category: 'ropa', price: 28000, stock: 3, minStock: 3, unit: 'und' },
   { name: 'Aretes de perla', category: 'accesorios', price: 18000, stock: 15, minStock: 4, unit: 'par' },

@@ -2,7 +2,7 @@ import { db } from '../store/db.js'
 import { icons } from '../icons.js'
 import { categoryLabel, escapeHtml, formatMoney, stockLabel, stockStatus } from '../utils.js'
 
-const CATEGORIES = ['todos', 'postres', 'ropa', 'accesorios', 'otro']
+const CATEGORIES = ['todos', 'comida', 'ropa', 'accesorios', 'otro']
 
 export default {
   title: 'Productos',
