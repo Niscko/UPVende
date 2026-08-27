@@ -12,12 +12,29 @@ export default {
     const alerts = db.lowStock()
     const products = db.products()
     const recent = db.sales().slice(0, 3)
+    const goal = db.getDayGoal()
+    const pct = goal ? Math.min(100, Math.round((stats.total / goal) * 100)) : 0
     return `
       <section class="page home">
         <div class="home__hello">
           <p class="eyebrow">${greeting()}</p>
           <h2>${escapeHtml(session.name.split(' ')[0])}</h2>
           <p class="muted">${escapeHtml(session.business)}</p>
+          <div class="home__goal">
+            <div class="home__goal-head">
+              <p class="eyebrow">Meta del día</p>
+              ${goal ? `<small>${formatMoney(stats.total)} · ${pct}%</small>` : ''}
+            </div>
+            <label class="home__goal-field">
+              <span>$</span>
+              <input id="day-goal" type="number" min="0" step="1000" inputmode="numeric" placeholder="50000" value="${goal || ''}" aria-label="Meta del día en pesos" />
+            </label>
+            ${
+              goal
+                ? `<div class="bar__track" aria-hidden="true"><span style="width:${pct}%"></span></div>`
+                : `<p class="hint home__goal-hint">Escribe cuánto quieres recoger hoy.</p>`
+            }
+          </div>
         </div>
         <article class="hero-card">
           <p class="eyebrow">Ventas de hoy</p>
@@ -57,6 +74,19 @@ export default {
       db.appendProducts(sampleCatalog())
       toast('Catálogo de ejemplo cargado')
       window.dispatchEvent(new HashChangeEvent('hashchange'))
+    })
+    const goalInput = document.getElementById('day-goal')
+    const saveGoal = () => {
+      const value = db.setDayGoal(goalInput.value)
+      toast(value ? 'Meta del día guardada' : 'Meta del día quitada')
+      window.dispatchEvent(new HashChangeEvent('hashchange'))
+    }
+    goalInput?.addEventListener('change', saveGoal)
+    goalInput?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault()
+        goalInput.blur()
+      }
     })
   },
 }

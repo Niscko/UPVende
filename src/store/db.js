@@ -6,6 +6,7 @@ const KEYS = {
   products: 'upventa_products',
   sales: 'upventa_sales',
   alertsSeen: 'upventa_alerts_seen',
+  dayGoals: 'upventa_day_goals',
 }
 
 function read(key, fallback) {
@@ -214,6 +215,24 @@ export const db = {
     sales.push(sale)
     write(KEYS.sales, sales)
     return sale
+  },
+
+  getDayGoal() {
+    const session = this.getSession()
+    if (!session) return 0
+    const goals = read(KEYS.dayGoals, {})
+    return Number(goals[session.id]) || 0
+  },
+
+  setDayGoal(amount) {
+    const session = this.getSession()
+    if (!session) return
+    const goals = read(KEYS.dayGoals, {})
+    const value = Math.max(0, Math.round(Number(amount) || 0))
+    if (value) goals[session.id] = value
+    else delete goals[session.id]
+    write(KEYS.dayGoals, goals)
+    return value
   },
 
   dayStats() {
