@@ -259,6 +259,27 @@ export const db = {
     }
   },
 
+  // Estadísticas de los últimos N días EN LOS QUE HUBO VENTAS (no días de calendario).
+  recentDaysStats(days = 10) {
+    const byDay = new Map()
+    // this.sales() viene de más reciente a más antiguo → los días entran en ese orden
+    for (const sale of this.sales()) {
+      const key = startOfDay(new Date(sale.createdAt))
+      if (!byDay.has(key)) byDay.set(key, { day: key, total: 0, count: 0, units: 0 })
+      const d = byDay.get(key)
+      d.total += sale.total
+      d.count += 1
+      d.units += sale.units
+    }
+    const list = [...byDay.values()].slice(0, days)
+    return {
+      list,
+      total: list.reduce((sum, d) => sum + d.total, 0),
+      count: list.reduce((sum, d) => sum + d.count, 0),
+      max: list.reduce((m, d) => Math.max(m, d.total), 0) || 1,
+    }
+  },
+
   appendProducts(products) {
     const session = this.getSession()
     const all = read(KEYS.products, [])
