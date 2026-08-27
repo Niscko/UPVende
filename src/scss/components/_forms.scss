@@ -5,13 +5,16 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  // minmax(0, 1fr) permite que las columnas encojan; con 1fr los inputs
+  // conservan su ancho intrínseco y desbordan la pantalla.
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
 }
 
 label {
   display: grid;
   gap: 6px;
+  min-width: 0;
   font-size: 0.86rem;
   font-weight: 600;
   color: $umber;
@@ -19,6 +22,8 @@ label {
 
 input,
 select {
+  width: 100%;
+  min-width: 0;
   height: 48px;
   padding: 0 14px;
   border: 1px solid $line;
