@@ -1,6 +1,6 @@
 import { db } from '../store/db.js'
 import { icons } from '../icons.js'
-import { escapeHtml, formatMoney, greeting, stockStatus } from '../utils.js'
+import { escapeHtml, formatMoney, formatThousands, greeting, parseAmount, stockStatus } from '../utils.js'
 import { sampleCatalog } from '../store/seed.js'
 import { toast } from '../components/toast.js'
 
@@ -27,7 +27,7 @@ export default {
             </div>
             <label class="home__goal-field">
               <span>$</span>
-              <input id="day-goal" type="number" min="0" step="1000" inputmode="numeric" placeholder="50000" value="${goal || ''}" aria-label="Meta del día en pesos" />
+              <input id="day-goal" type="text" inputmode="numeric" placeholder="50.000" value="${formatThousands(goal)}" aria-label="Meta del día en pesos" autocomplete="off" />
             </label>
             ${
               goal
@@ -76,11 +76,16 @@ export default {
       window.dispatchEvent(new HashChangeEvent('hashchange'))
     })
     const goalInput = document.getElementById('day-goal')
+    const formatField = () => {
+      goalInput.value = formatThousands(goalInput.value)
+    }
     const saveGoal = () => {
-      const value = db.setDayGoal(goalInput.value)
+      formatField()
+      const value = db.setDayGoal(parseAmount(goalInput.value))
       toast(value ? 'Meta del día guardada' : 'Meta del día quitada')
       window.dispatchEvent(new HashChangeEvent('hashchange'))
     }
+    goalInput?.addEventListener('input', formatField)
     goalInput?.addEventListener('change', saveGoal)
     goalInput?.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {

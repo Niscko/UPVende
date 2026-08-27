@@ -1,4 +1,4 @@
-import { startOfDay, uid } from '../utils.js'
+import { parseAmount, startOfDay, uid } from '../utils.js'
 
 const KEYS = {
   users: 'upventa_users',
@@ -228,7 +228,7 @@ export const db = {
     const session = this.getSession()
     if (!session) return
     const goals = read(KEYS.dayGoals, {})
-    const value = Math.max(0, Math.round(Number(amount) || 0))
+    const value = parseAmount(amount)
     if (value) goals[session.id] = value
     else delete goals[session.id]
     write(KEYS.dayGoals, goals)

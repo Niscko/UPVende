@@ -12,6 +12,15 @@ export function escapeHtml(value) {
     .replace(/'/g, '&#39;')
 }
 
+export function parseAmount(value) {
+  return Math.max(0, Math.round(Number(String(value ?? '').replace(/\D/g, '')) || 0))
+}
+
+export function formatThousands(amount) {
+  const n = parseAmount(amount)
+  return n ? new Intl.NumberFormat('es-CO').format(n) : ''
+}
+
 export function formatMoney(amount) {
   return new Intl.NumberFormat('es-CO', {
     style: 'currency',
