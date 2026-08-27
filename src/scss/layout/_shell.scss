@@ -25,8 +25,10 @@
   height: 100dvh;
   margin: 0 auto;
   background: $bone;
-  padding-bottom: 24px;
+  padding: 8px 0 12px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .page {
@@ -58,6 +60,13 @@
   .view--auth {
     height: calc(100dvh - 48px);
     border-radius: 28px;
+  }
+
+  .device {
     overflow: hidden;
+  }
+
+  .view--auth {
+    overflow-y: auto;
   }
 }
