@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UPVenta — Prototipo digital (Figma)</title>
+    <style>
+      :root {
+        --bone: #f7f4ef;
+        --parchment: #ede7dc;
+        --khaki: #c9b8a8;
+        --umber: #6f6259;
+        --ink: #2f2a26;
+        --white: #fffdf9;
+        --accent: #d4785a;
+        --accent-dark: #b85c42;
+        --sage: #5b7c6a;
+        --gold: #c4a35a;
+        --danger: #b85c4a;
+        --line: rgba(47, 42, 38, 0.1);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Outfit, "Segoe UI", sans-serif;
+        background: #cfc8be;
+        color: var(--ink);
+      }
+      .board { padding: 48px 56px 80px; min-width: 1680px; }
+      .board__head h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: -0.04em; }
+      .board__head p { margin: 0 0 28px; color: var(--umber); }
+      .flow {
+        display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+        margin-bottom: 40px; max-width: 1100px;
+      }
+      .flow span, .flow b {
+        background: #fffdf9; border: 1px solid var(--line); border-radius: 999px;
+        padding: 8px 14px; font-size: 13px;
+      }
+      .flow b { background: var(--ink); color: var(--bone); }
+      .flow i { color: var(--umber); font-style: normal; }
+      .row { display: flex; gap: 36px; margin-bottom: 48px; align-items: flex-start; }
+      .col { width: 390px; }
+      .label {
+        font-size: 13px; font-weight: 700; margin-bottom: 10px;
+        display: flex; justify-content: space-between;
+      }
+      .label small { color: var(--umber); font-weight: 500; }
+      .phone {
+        width: 390px; height: 844px; background: var(--bone); border-radius: 36px;
+        overflow: hidden; box-shadow: 0 24px 50px rgba(47, 42, 38, 0.18);
+        position: relative; display: flex; flex-direction: column;
+      }
+      .status {
+        height: 28px; display: flex; justify-content: space-between;
+        padding: 8px 22px 0; font-size: 12px; font-weight: 700;
+      }
+      .topbar {
+        height: 56px; display: flex; align-items: center; justify-content: space-between;
+        padding: 0 14px; border-bottom: 1px solid var(--line);
+      }
+      .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+      .logo { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); }
+      .topbar h2 { margin: 0; font-size: 16px; }
+      .avatar {
+        width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--bone);
+        display: grid; place-items: center; font-size: 12px; font-weight: 700;
+      }
+      .bell { position: relative; }
+      .dot {
+        position: absolute; top: -4px; right: -6px; background: var(--accent); color: #fff;
+        font-size: 10px; width: 16px; height: 16px; border-radius: 50%;
+        display: grid; place-items: center;
+      }
+      .page { padding: 14px 16px 86px; flex: 1; overflow: hidden; font-size: 14px; }
+      .auth { padding: 48px 18px 24px; text-align: center; }
+      .auth h1 { font-size: 32px; margin: 10px 0 6px; }
+      .auth p { color: var(--umber); margin: 0 0 22px; }
+      .card {
+        background: var(--white); border: 1px solid var(--line); border-radius: 18px;
+        padding: 14px; text-align: left; box-shadow: 0 10px 24px rgba(47, 42, 38, 0.06);
+      }
+      label { display: grid; gap: 6px; font-size: 12px; font-weight: 600; color: var(--umber); margin-bottom: 12px; }
+      .field {
+        height: 44px; border-radius: 14px; border: 1px solid var(--line); background: #fff;
+        display: flex; align-items: center; padding: 0 12px; color: #b0a89e;
+      }
+      .btn { height: 46px; border-radius: 16px; display: grid; place-items: center; font-weight: 700; margin-top: 8px; }
+      .btn-primary { background: var(--accent); color: #fff; }
+      .btn-ghost { background: var(--parchment); }
+      .btn-light { background: #fff; color: var(--ink); }
+      .hero { background: var(--ink); color: var(--bone); border-radius: 18px; padding: 18px; margin: 10px 0 12px; }
+      .hero .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--khaki); }
+      .hero strong { display: block; font-size: 28px; margin: 6px 0 10px; }
+      .meta { display: flex; gap: 14px; color: var(--khaki); font-size: 13px; margin-bottom: 12px; }
+      .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-dark); }
+      h3.hello { margin: 2px 0; font-size: 26px; }
+      .muted { color: var(--umber); font-size: 13px; }
+      .alert {
+        display: flex; gap: 10px; align-items: center; background: #f6ece6;
+        border-radius: 18px; padding: 12px; margin-bottom: 12px;
+      }
+      .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+      .quick, .rowc, .stat {
+        background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 12px;
+      }
+      .quick { text-align: center; font-size: 12px; font-weight: 700; }
+      .quick small { display: block; color: var(--umber); font-weight: 500; }
+      .rowc { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+      .tabbar {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 74px;
+        background: rgba(255,253,249,.96); border-top: 1px solid var(--line);
+        display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 6px 12px;
+        font-size: 10px; font-weight: 700; text-align: center; color: #8d7b68;
+      }
+      .tab.on { color: var(--ink); }
+      .pill {
+        width: 42px; height: 30px; margin: 0 auto 4px; border-radius: 12px;
+        background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 16px;
+      }
+      .filters { display: flex; gap: 6px; margin: 10px 0; }
+      .chip { border-radius: 99px; padding: 6px 10px; background: #fff; border: 1px solid var(--line); font-size: 12px; font-weight: 600; }
+      .chip.on { background: var(--ink); color: var(--bone); }
+      .badge { font-size: 11px; font-weight: 700; border-radius: 99px; padding: 3px 8px; }
+      .ok { background: rgba(91,124,106,.16); color: var(--sage); }
+      .low { background: rgba(196,163,90,.22); color: #8a6b1f; }
+      .out { background: rgba(184,92,74,.16); color: var(--danger); }
+      .search {
+        flex: 1; height: 42px; border-radius: 14px; background: #fff; border: 1px solid var(--line);
+        display: flex; align-items: center; padding: 0 12px; color: #b0a89e; font-size: 13px;
+      }
+      .toolbar { display: flex; gap: 8px; }
+      .btn-sm { height: 42px; padding: 0 12px; border-radius: 14px; background: var(--accent); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: 13px; }
+      .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .stat p { margin: 0; color: var(--umber); font-size: 12px; }
+      .stat strong { font-size: 18px; }
+      .bar { height: 8px; background: var(--parchment); border-radius: 99px; margin: 6px 0 12px; }
+      .bar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+      .step { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+      .circ { width: 28px; height: 28px; border-radius: 10px; background: var(--parchment); display: grid; place-items: center; }
+      .salebar {
+        position: absolute; left: 12px; right: 12px; bottom: 86px; background: #fff;
+        border-radius: 16px; border: 1px solid var(--line); display: flex;
+        justify-content: space-between; align-items: center; padding: 10px;
+      }
+      .note { margin-top: 32px; color: var(--umber); max-width: 720px; line-height: 1.5; font-size: 14px; }
+      .logo-lg { width: 56px; height: 56px; border-radius: 16px; background: var(--accent); margin: 0 auto; }
+    </style>
+  </head>
+  <body>
+    <div class="board">
+      <div class="board__head">
+        <h1>UPVenta — prototipo digital</h1>
+        <p>Entrega 2 · App híbrida · Paleta Coolors · Frames iPhone 14 (390×844) · Importar a Figma</p>
+      </div>
+
+      <div class="flow">
+        <b>Login</b><i>→</i>
+        <span>Registro</span><i>→</i>
+        <b>Inicio</b><i>→</i>
+        <span>Productos</span><i>→</i>
+        <span>Nuevo producto</span><i>→</i>
+        <b>Vender</b><i>→</i>
+        <span>Hoy</span><i>→</i>
+        <span>Alertas</span><i>→</i>
+        <span>Historial</span><i>→</i>
+        <span>Detalle venta</span><i>→</i>
+        <span>Créditos</span>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="label">01 Login <small>#/login</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="auth">
+              <div class="logo-lg"></div>
+              <h1>UPVenta</h1>
+              <p>Inventario y ventas para tu emprendimiento, en el celular.</p>
+              <div class="card">
+                <label>Correo<div class="field">tu@correo.com</div></label>
+                <label>Clave<div class="field">••••••••</div></label>
+                <div class="btn btn-primary">Entrar</div>
+                <div class="btn btn-ghost">Probar cuenta demo</div>
+              </div>
+              <p style="margin-top:16px">¿Aún no tienes cuenta? <b style="color:var(--accent-dark)">Crear cuenta</b></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="label">02 Registro <small>#/registro</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="auth" style="padding-top:28px">
+              <div class="logo-lg"></div>
+              <h1 style="font-size:26px">Crea tu caja</h1>
+              <p>Simulamos el registro con localStorage.</p>
+              <div class="card">
+                <label>Tu nombre<div class="field">Camila Restrepo</div></label>
+                <label>Emprendimiento<div class="field">Dulce & Tela</div></label>
+                <label>Correo<div class="field">tu@correo.com</div></label>
+                <label>Clave<div class="field">••••••••</div></label>
+                <div class="btn btn-primary">Crear cuenta</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="label">03 Inicio <small>#/inicio</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="topbar">
+              <div class="brand"><div class="logo"></div>UPVenta</div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <div class="bell">🔔<span class="dot">2</span></div>
+                <div class="avatar">C</div>
+              </div>
+            </div>
+            <div class="page">
+              <div class="eyebrow">Buenas tardes</div>
+              <h3 class="hello">Camila</h3>
+              <div class="muted">Dulce & Tela</div>
+              <div class="hero">
+                <div class="k">Ventas de hoy</div>
+                <strong>$42.500</strong>
+                <div class="meta"><span>2 ventas</span><span>4 unidades</span></div>
+                <div class="btn btn-light">+ Registrar venta</div>
+              </div>
+              <div class="alert"><div>⚠</div><div><b>2 productos con stock bajo</b><div class="muted">Revisa para no quedarte sin inventario.</div></div></div>
+              <div class="grid3">
+                <div class="quick">Caja<br><small>8</small></div>
+                <div class="quick">Resumen<br><small>del día</small></div>
+                <div class="quick">Historial<br><small>2</small></div>
+              </div>
+              <div class="muted" style="margin:12px 0 8px;font-weight:700;color:var(--ink)">Últimas ventas</div>
+              <div class="rowc"><div><b>$20.500</b><div class="muted">2× Brownie · 1× Galletas</div></div>›</div>
+              <div class="rowc"><div><b>$18.000</b><div class="muted">1× Aretes de perla</div></div>›</div>
+            </div>
+            <div class="tabbar">
+              <div class="tab on">⌂<br>Inicio</div>
+              <div>▣<br>Productos</div>
+              <div><div class="pill">🛒</div>Vender</div>
+              <div>✦<br>Hoy</div>
+              <div>◷<br>Historial</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="label">04 Productos y stock <small>#/productos</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="topbar"><div class="brand"><div class="logo"></div>UPVenta</div><h2>Productos</h2><div class="avatar">C</div></div>
+            <div class="page">
+              <div class="toolbar">
+                <div class="search">Buscar producto</div>
+                <div class="btn-sm">+ Nuevo</div>
+              </div>
+              <div class="filters">
+                <div class="chip on">Todos</div>
+                <div class="chip">Postres</div>
+                <div class="chip">Ropa</div>
+                <div class="chip">Accesorios</div>
+              </div>
+              <div class="rowc"><div><b>Brownie de chocolate</b><div class="muted">Postres · $8.000</div></div><span class="badge ok">12 und</span></div>
+              <div class="rowc"><div><b>Cheesecake de frutos</b><div class="muted">Postres · $12.000</div></div><span class="badge ok">6 und</span></div>
+              <div class="rowc"><div><b>Tote bag de lona</b><div class="muted">Ropa · $28.000</div></div><span class="badge low">3 und</span></div>
+              <div class="rowc"><div><b>Collar minimal</b><div class="muted">Accesorios · $22.000</div></div><span class="badge out">2 und</span></div>
+              <div class="rowc"><div><b>Aretes de perla</b><div class="muted">Accesorios · $18.000</div></div><span class="badge ok">15 par</span></div>
+            </div>
+            <div class="tabbar">
+              <div>⌂<br>Inicio</div>
+              <div class="tab on">▣<br>Productos</div>
+              <div><div class="pill">🛒</div>Vender</div>
+              <div>✦<br>Hoy</div>
+              <div>◷<br>Historial</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="label">05 Registrar venta <small>#/vender</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="topbar"><div class="brand"><div class="logo"></div>UPVenta</div><h2>Vender</h2><div class="avatar">C</div></div>
+            <div class="page">
+              <p class="muted">Toca + apenas ocurra la venta. El stock se descuenta al confirmar.</p>
+              <div class="rowc"><div><b>Brownie de chocolate</b><div class="muted">$8.000 · 12 und</div></div><div class="step"><div class="circ">−</div>2<div class="circ">+</div></div></div>
+              <div class="rowc"><div><b>Galletas de avena x4</b><div class="muted">$4.500 · 24 paq</div></div><div class="step"><div class="circ">−</div>1<div class="circ">+</div></div></div>
+              <div class="rowc"><div><b>Aretes de perla</b><div class="muted">$18.000 · 15 par</div></div><div class="step"><div class="circ">−</div>0<div class="circ">+</div></div></div>
+              <div class="rowc"><div><b>Collar minimal</b><div class="muted">$22.000 · 2 und</div></div><div class="step"><div class="circ">−</div>0<div class="circ">+</div></div></div>
+            </div>
+            <div class="salebar">
+              <div><b>$20.500</b><div class="muted">3 und · 2 productos</div></div>
+              <div class="btn-sm">Confirmar venta</div>
+            </div>
+            <div class="tabbar">
+              <div>⌂<br>Inicio</div>
+              <div>▣<br>Productos</div>
+              <div><div class="pill">🛒</div>Vender</div>
+              <div>✦<br>Hoy</div>
+              <div>◷<br>Historial</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="label">06 Resumen del día <small>#/hoy</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="topbar"><div class="brand"><div class="logo"></div>UPVenta</div><h2>Hoy</h2><div class="avatar">C</div></div>
+            <div class="page">
+              <p class="muted">mié, 26 ago · cierre rápido del día</p>
+              <div class="stats">
+                <div class="stat"><p>Recaudo</p><strong>$42.500</strong></div>
+                <div class="stat"><p>Ventas</p><strong>2</strong></div>
+                <div class="stat"><p>Unidades</p><strong>4</strong></div>
+                <div class="stat"><p>Ticket promedio</p><strong>$21.250</strong></div>
+              </div>
+              <div class="muted" style="margin:14px 0 8px;font-weight:700;color:var(--ink)">Más vendidos</div>
+              <div><span>Brownie de chocolate</span><div class="bar"><i style="width:80%"></i></div></div>
+              <div><span>Aretes de perla</span><div class="bar"><i style="width:40%"></i></div></div>
+              <div class="muted" style="margin:14px 0 8px;font-weight:700;color:var(--ink)">Detalle del día</div>
+              <div class="rowc"><div><b>$20.500</b><div class="muted">10:02 a. m. · 3 und</div></div></div>
+              <div class="rowc"><div><b>$18.000</b><div class="muted">11:28 a. m. · 1 und</div></div></div>
+            </div>
+            <div class="tabbar">
+              <div>⌂<br>Inicio</div>
+              <div>▣<br>Productos</div>
+              <div><div class="pill">🛒</div>Vender</div>
+              <div class="tab on">✦<br>Hoy</div>
+              <div>◷<br>Historial</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="label">07 Alertas de stock <small>#/alertas</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="topbar"><div class="brand"><div class="logo"></div>UPVenta</div><h2>Alertas</h2><div class="avatar">C</div></div>
+            <div class="page">
+              <p class="muted">Productos con stock igual o menor al mínimo.</p>
+              <div class="card" style="margin-bottom:10px">
+                <div style="display:flex;justify-content:space-between"><b>Tote bag de lona</b><span class="badge low">3 und · Stock bajo</span></div>
+                <div class="muted" style="margin:6px 0 10px">Ropa · mínimo 3</div>
+                <div style="display:flex;gap:8px">
+                  <div class="btn-sm" style="background:var(--parchment);color:var(--ink)">+ 1</div>
+                  <div class="btn-sm" style="background:var(--parchment);color:var(--ink)">+ 5</div>
+                  <div class="btn-sm" style="background:var(--parchment);color:var(--ink)">Editar</div>
+                </div>
+              </div>
+              <div class="card">
+                <div style="display:flex;justify-content:space-between"><b>Collar minimal</b><span class="badge out">2 und · Agotado</span></div>
+                <div class="muted" style="margin:6px 0 10px">Accesorios · mínimo 3</div>
+                <div style="display:flex;gap:8px">
+                  <div class="btn-sm" style="background:var(--parchment);color:var(--ink)">+ 1</div>
+                  <div class="btn-sm" style="background:var(--parchment);color:var(--ink)">+ 5</div>
+                  <div class="btn-sm" style="background:var(--parchment);color:var(--ink)">Editar</div>
+                </div>
+              </div>
+            </div>
+            <div class="tabbar">
+              <div>⌂<br>Inicio</div>
+              <div>▣<br>Productos</div>
+              <div><div class="pill">🛒</div>Vender</div>
+              <div>✦<br>Hoy</div>
+              <div>◷<br>Historial</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="label">08 Historial <small>#/historial</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="topbar"><div class="brand"><div class="logo"></div>UPVenta</div><h2>Historial</h2><div class="avatar">C</div></div>
+            <div class="page">
+              <div class="filters">
+                <div class="chip on">Todo</div>
+                <div class="chip">Hoy</div>
+                <div class="chip">7 días</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin:8px 0"><b>mié, 26 ago</b><span style="color:var(--accent-dark)">$42.500</span></div>
+              <div class="rowc"><div><b>$20.500</b><div class="muted">10:02 · 2× Brownie, 1× Galletas</div></div>›</div>
+              <div class="rowc"><div><b>$18.000</b><div class="muted">11:28 · 1× Aretes de perla</div></div>›</div>
+            </div>
+            <div class="tabbar">
+              <div>⌂<br>Inicio</div>
+              <div>▣<br>Productos</div>
+              <div><div class="pill">🛒</div>Vender</div>
+              <div>✦<br>Hoy</div>
+              <div class="tab on">◷<br>Historial</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="label">09 Detalle de venta <small>#/historial/:id</small></div>
+          <div class="phone">
+            <div class="status"><span>9:41</span><span>●●●</span></div>
+            <div class="topbar"><div>‹</div><h2>Venta</h2><div class="avatar">C</div></div>
+            <div class="page">
+              <div class="hero" style="background:#fff;color:var(--ink);border:1px solid var(--line)">
+                <div class="eyebrow">26 ago 2026, 10:02 a. m.</div>
+                <strong style="color:var(--ink)">$20.500</strong>
+                <div class="meta" style="color:var(--umber);margin:0"><span>3 unidades</span><span>2 productos</span></div>
+              </div>
+              <div class="muted" style="margin:14px 0 8px;font-weight:700;color:var(--ink)">Productos vendidos</div>
+              <div class="rowc"><div><b>Brownie de chocolate</b><div class="muted">2 × $8.000<br>Stock actual: 10 und</div></div><b>$16.000</b></div>
+              <div class="rowc"><div><b>Galletas de avena x4</b><div class="muted">1 × $4.500<br>Stock actual: 23 paq</div></div><b>$4.500</b></div>
+              <p class="muted">Nota: Pedido WhatsApp</p>
+              <div class="btn btn-primary">Nueva venta</div>
+            </div>
+            <div class="tabbar">
+              <div>⌂<br>Inicio</div>
+              <div>▣<br>Productos</div>
+              <div><div class="pill">🛒</div>Vender</div>
+              <div>✦<br>Hoy</div>
+              <div class="tab on">◷<br>Historial</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="note">
+        Abre este archivo, captura cada teléfono e impórtalo a Figma como frames de 390×844.
+        En Prototype conecta: Login → Inicio → Productos / Vender / Hoy / Historial, y la campana → Alertas.
+        Luego Share → Anyone with the link → copia el enlace al README.
+      </p>
+    </div>
+  </body>
+</html>
