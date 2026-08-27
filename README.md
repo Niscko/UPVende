@@ -29,13 +29,9 @@ Datos en `localStorage`. Funciona sin internet.
 
 ## Prototipo Figma
 
-Pantallas listas para importar: abre `figma/tablero.html` en el navegador.
+https://www.figma.com/design/LXumDKgTOavzvOy12hWqmF/UPVenta-%E2%80%94-Prototipo
 
-1. En [figma.com](https://www.figma.com) crea un archivo **UPVenta**.
-2. Crea frames **iPhone 14** (390×844), uno por pantalla.
-3. Captura cada teléfono del tablero (`Cmd + Shift + 4`) y pégalo en su frame.
-4. En **Prototype**, conecta: Login → Inicio → Productos / Vender / Hoy / Historial, y la campana → Alertas.
-5. Share → *Anyone with the link* → pega el enlace aquí:
+10 pantallas iPhone (390×844), tokens de color UPVenta y flujo Prototype (Login → Inicio → Productos / Vender / Hoy / Historial, campana → Alertas).
 
-https://www.figma.com/file/REEMPLAZAR
+Share → *Anyone with the link can view* para la entrega.
 
