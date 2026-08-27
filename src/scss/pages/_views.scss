@@ -56,6 +56,9 @@
 
 .home__hello {
   margin-bottom: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 
   h2 {
     font-size: 1.8rem;
@@ -101,6 +104,8 @@
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     appearance: textfield;
+    user-select: text;
+    -webkit-user-select: text;
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
