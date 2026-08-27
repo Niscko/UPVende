@@ -55,11 +55,19 @@ export function startRouter() {
     } else {
       app.innerHTML = `
         <div class="device">
-          ${renderHeader({ title: route.view.title, back: route.view.back })}
+          ${renderHeader({ title: route.view.title, back: route.view.back, path })}
           <main class="view" id="view">${route.view.render(route.params)}</main>
           ${renderNav(route.path)}
         </div>
       `
+      // En la pantalla de Alertas, la campana funciona como toggle: vuelve atrás.
+      if (path === '/alertas') {
+        document.getElementById('bell-btn')?.addEventListener('click', (event) => {
+          event.preventDefault()
+          if (window.history.length > 1) window.history.back()
+          else navigate('/inicio')
+        })
+      }
     }
     route.view.afterRender?.(route.params)
     window.scrollTo(0, 0)

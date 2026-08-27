@@ -2,9 +2,10 @@ import { db } from '../store/db.js'
 import { icons, logoMark } from '../icons.js'
 import { escapeHtml } from '../utils.js'
 
-export function renderHeader({ title, back } = {}) {
+export function renderHeader({ title, back, path } = {}) {
   const session = db.getSession()
   const alerts = db.lowStock().length
+  const onAlerts = path === '/alertas'
   return `
     <header class="topbar">
       <div class="topbar__left">
@@ -16,7 +17,8 @@ export function renderHeader({ title, back } = {}) {
       </div>
       <h1 class="topbar__title">${title || ''}</h1>
       <div class="topbar__right">
-        <a class="icon-btn ${alerts ? 'has-badge' : ''}" href="#/alertas" aria-label="Alertas de stock">
+        <a class="icon-btn ${onAlerts ? 'is-active' : ''} ${alerts ? 'has-badge' : ''}" id="bell-btn" href="#/alertas"
+           aria-label="${onAlerts ? 'Cerrar alertas' : 'Alertas de stock'}" aria-pressed="${onAlerts}">
           ${icons.bell}
           ${alerts ? `<span class="badge-dot">${alerts}</span>` : ''}
         </a>
