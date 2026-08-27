@@ -8,12 +8,14 @@
   padding: 20px;
   background: $ink;
   color: $bone;
+  border: 1px solid rgba($gold-bright, 0.25);
   margin-bottom: 14px;
 
   strong {
     display: block;
     font-size: 2rem;
     margin: 8px 0 12px;
+    color: $gold-bright;
   }
 
   .eyebrow {
@@ -32,6 +34,11 @@
 .hero-card--plain {
   background: $white;
   color: $ink;
+  border-color: $line;
+
+  strong {
+    color: $ink;
+  }
 
   .eyebrow {
     color: $accent-dark;
