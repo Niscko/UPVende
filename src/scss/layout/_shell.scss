@@ -1,0 +1,63 @@
+#app {
+  min-height: 100dvh;
+}
+
+.device {
+  width: min(100%, $device-w);
+  height: 100dvh;
+  margin: 0 auto;
+  background: $bone;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: $shadow-strong;
+  overflow: hidden;
+}
+
+.view {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: calc(#{$tabbar-h} + env(safe-area-inset-bottom));
+}
+
+.view--auth {
+  width: min(100%, $device-w);
+  height: 100dvh;
+  margin: 0 auto;
+  background: $bone;
+  padding-bottom: 24px;
+  overflow-y: auto;
+}
+
+.page {
+  @include page-pad;
+}
+
+.section-head {
+  @include flex-between;
+  margin: 22px 0 10px;
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  a,
+  span {
+    color: $accent-dark;
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    padding: 24px 0;
+  }
+
+  .device,
+  .view--auth {
+    height: calc(100dvh - 48px);
+    border-radius: 28px;
+    overflow: hidden;
+  }
+}

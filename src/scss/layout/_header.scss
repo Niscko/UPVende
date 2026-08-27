@@ -1,0 +1,89 @@
+.topbar {
+  @include flex-between;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  height: $topbar-h;
+  padding: 0 12px 0 14px;
+  background: rgba($bone, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid $line;
+}
+
+.topbar__title {
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.topbar__left,
+.topbar__right {
+  @include flex-center;
+  gap: 8px;
+  min-width: 88px;
+}
+
+.topbar__right {
+  justify-content: flex-end;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+
+  span {
+    font-size: 1.05rem;
+  }
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+}
+
+.icon-btn {
+  @include flex-center;
+  @include tap;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  color: $ink;
+  position: relative;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+  }
+}
+
+.has-badge .badge-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 99px;
+  background: $accent;
+  color: $white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  @include flex-center;
+}
+
+.avatar {
+  @include flex-center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: $ink;
+  color: $bone;
+  font-size: 0.85rem;
+  font-weight: 700;
+}

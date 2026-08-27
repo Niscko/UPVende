@@ -1,0 +1,149 @@
+.auth {
+  @include page-pad;
+  padding-top: 48px;
+}
+
+.auth__brand {
+  text-align: center;
+  margin-bottom: 24px;
+
+  .logo-mark {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 12px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 6px;
+  }
+
+  p {
+    color: $umber;
+    max-width: 280px;
+    margin: 0 auto;
+    line-height: 1.4;
+  }
+}
+
+.auth__swap {
+  text-align: center;
+  margin-top: 18px;
+  color: $umber;
+
+  a {
+    color: $accent-dark;
+    font-weight: 700;
+  }
+}
+
+.home__hello {
+  margin-bottom: 16px;
+
+  h2 {
+    font-size: 1.8rem;
+  }
+}
+
+.sale {
+  padding-bottom: 90px;
+}
+
+.sale-bar {
+  @include card;
+  @include flex-between;
+  position: sticky;
+  bottom: calc(#{$tabbar-h} + 10px);
+  padding: 12px;
+  gap: 12px;
+  background: $white;
+  z-index: 4;
+
+  p {
+    color: $umber;
+    font-size: 0.82rem;
+  }
+
+  .btn {
+    flex: 0 0 auto;
+  }
+}
+
+.stepper {
+  @include flex-center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.stepper__qty {
+  width: 28px;
+  text-align: center;
+  font-weight: 700;
+  color: $taupe;
+
+  &.is-on {
+    color: $ink;
+  }
+
+  &.is-out {
+    color: $danger;
+  }
+}
+
+.bars {
+  display: grid;
+  gap: 12px;
+}
+
+.bar__top {
+  @include flex-between;
+  font-size: 0.88rem;
+  margin-bottom: 6px;
+
+  small {
+    color: $umber;
+  }
+}
+
+.bar__track {
+  height: 8px;
+  background: $parchment;
+  border-radius: 99px;
+  overflow: hidden;
+
+  span {
+    display: block;
+    height: 100%;
+    background: $accent;
+    border-radius: 99px;
+  }
+}
+
+.credits {
+  .credits__brand {
+    text-align: center;
+    margin-bottom: 16px;
+
+    .logo-mark {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 10px;
+    }
+  }
+
+  .card {
+    margin-bottom: 12px;
+
+    h3 {
+      margin-bottom: 8px;
+    }
+
+    p + p {
+      margin-top: 4px;
+    }
+
+    li {
+      margin: 4px 0;
+    }
+  }
+}

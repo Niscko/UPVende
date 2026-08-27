@@ -1,0 +1,189 @@
+.card {
+  @include card;
+  padding: 16px;
+}
+
+.hero-card {
+  @include card;
+  padding: 20px;
+  background: $ink;
+  color: $bone;
+  margin-bottom: 14px;
+
+  strong {
+    display: block;
+    font-size: 2rem;
+    margin: 8px 0 12px;
+  }
+
+  .eyebrow {
+    color: $khaki;
+  }
+}
+
+.hero-card__meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  color: $khaki;
+  font-size: 0.9rem;
+}
+
+.hero-card--plain {
+  background: $white;
+  color: $ink;
+
+  .eyebrow {
+    color: $accent-dark;
+  }
+
+  .hero-card__meta {
+    color: $umber;
+    margin-bottom: 0;
+  }
+}
+
+.row-card {
+  @include card;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+
+  strong {
+    display: block;
+  }
+
+  p {
+    margin-top: 3px;
+    font-size: 0.84rem;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: $taupe;
+    flex: 0 0 auto;
+  }
+}
+
+.row-card__icon {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: $parchment;
+  color: $ink;
+  flex: 0 0 auto;
+
+  svg {
+    color: $ink;
+  }
+}
+
+.row-card__side {
+  margin-left: auto;
+  text-align: right;
+
+  small {
+    display: block;
+    margin-top: 4px;
+    color: $umber;
+    font-size: 0.72rem;
+  }
+}
+
+.row-card--static {
+  align-items: center;
+}
+
+.row-card--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.row-card__main {
+  @include flex-between;
+  gap: 10px;
+}
+
+.row-card__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 8px 0 6px;
+}
+
+.quick {
+  @include card;
+  padding: 14px 10px;
+  text-align: center;
+
+  svg {
+    width: 22px;
+    height: 22px;
+    margin: 0 auto 8px;
+  }
+
+  span {
+    display: block;
+    font-weight: 650;
+    font-size: 0.86rem;
+  }
+
+  small {
+    color: $umber;
+  }
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat {
+  @include card;
+  padding: 14px;
+
+  p {
+    color: $umber;
+    font-size: 0.82rem;
+  }
+
+  strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.25rem;
+  }
+}
+
+.alert-banner {
+  @include card;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: #f6ece6;
+
+  svg {
+    width: 22px;
+    height: 22px;
+    color: $danger;
+    flex: 0 0 auto;
+  }
+
+  p {
+    color: $umber;
+    font-size: 0.84rem;
+    margin-top: 2px;
+  }
+}

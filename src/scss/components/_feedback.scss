@@ -1,0 +1,83 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(#{$tabbar-h} + 20px);
+  transform: translateX(-50%);
+  width: min(calc(100% - 32px), 380px);
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: $ink;
+  color: $bone;
+  z-index: 30;
+  box-shadow: $shadow-strong;
+  animation: toast-in 0.25s ease;
+}
+
+.toast--error {
+  background: $danger;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(47, 42, 38, 0.45);
+  z-index: 40;
+  @include flex-center;
+  padding: 20px;
+}
+
+.modal {
+  width: min(100%, 360px);
+  background: $white;
+  border-radius: $radius-lg;
+  padding: 20px;
+  box-shadow: $shadow-strong;
+
+  h3 {
+    margin-bottom: 10px;
+  }
+}
+
+.modal__body {
+  color: $umber;
+  line-height: 1.45;
+}
+
+.modal__total {
+  margin-top: 10px;
+  color: $ink;
+  font-weight: 700;
+}
+
+.modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.empty {
+  @include card;
+  text-align: center;
+  padding: 28px 16px;
+
+  p {
+    margin-bottom: 14px;
+    color: $umber;
+  }
+}
+
+.empty--soft {
+  margin-top: 16px;
+}
