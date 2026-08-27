@@ -50,9 +50,9 @@ export function startOfDay(date = new Date()) {
 
 export function greeting() {
   const hour = new Date().getHours()
-  if (hour < 12) return 'Buenos días'
-  if (hour < 18) return 'Buenas tardes'
-  return 'Buenas noches'
+  if (hour >= 18 || hour < 5) return 'Buenas noches' // 18:00 – 04:59
+  if (hour < 12) return 'Buenos días' // 05:00 – 11:59
+  return 'Buenas tardes' // 12:00 – 17:59
 }
 
 export function categoryLabel(key) {
