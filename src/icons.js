@@ -30,7 +30,7 @@ export const icons = {
 
 export const logoMark = `
 <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true">
-  <rect width="64" height="64" rx="18" fill="#1a1a1a"/>
+  <rect width="64" height="64" rx="18" fill="#2f2a26"/>
   <path d="M18 26 32 18l14 8v16L32 50 18 42V26Z" fill="#c9a227" fill-opacity=".16"/>
   <path d="M18 26 32 34l14-8M32 34v16" stroke="#c9a227" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="m26 27 4.2 4.2L38.5 23" stroke="#9e1b2f" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>

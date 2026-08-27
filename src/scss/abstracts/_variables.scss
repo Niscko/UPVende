@@ -1,31 +1,33 @@
 // =========================================================
-// Paleta institucional UPB
+// Paleta base NEUTRA (coolors.co/f7f4ef-ede7dc-c9b8a8-6f6259-2f2a26)
+// + acentos institucionales UPB (oro y rojo) usados solo en detalles.
 //   Oro   → fe, pureza y constancia
 //   Rojo  → caridad y valor
 //   Negro → ciencia y modestia
-// Se conservan neutros cálidos de apoyo para legibilidad.
 // =========================================================
 
-// --- Neutros de apoyo ---
-$bone: #f8f5ef; // fondo de la app
-$parchment: #efe8d9; // rellenos suaves, chips
-$khaki: #ddcdaa; // bordes marcados, texto sobre negro
-$taupe: #8c8168; // texto terciario / íconos
-$umber: #6a6150; // texto secundario
-$white: #ffffff;
+// --- Neutros ---
+$bone: #f7f4ef; // fondo de la app
+$parchment: #ede7dc; // rellenos suaves, chips
+$khaki: #c9b8a8; // bordes, texto sobre oscuro
+$taupe: #8d7b68; // texto terciario / íconos
+$umber: #6f6259; // texto secundario
+$white: #fffdf9;
+$ink: #2f2a26; // casi-negro cálido: texto, tarjeta principal, chips activos
 
-// --- Institucionales ---
-$ink: #1a1a1a; // NEGRO UPB: texto, tarjeta principal, chips activos
-$accent: #9e1b2f; // ROJO UPB: acciones primarias, nav activa, enlaces
-$accent-dark: #7c1526; // rojo UPB oscuro: hover / texto de enlace
-$gold: #b4892a; // ORO UPB: detalles, badges, acentos sobre claro
-$gold-bright: #c9a227; // oro luminoso: acentos sobre negro
+// --- Acción (neutro oscuro, para no romper la paleta neutra) ---
+$accent: #34302a; // botones primarios, pill de navegación
+$accent-dark: #7a5c14; // enlaces y estados activos → oro UPB oscuro
+
+// --- Acentos institucionales UPB (solo detalles) ---
+$gold: #b4892a; // oro: badges, barras de datos
+$gold-bright: #c9a227; // oro luminoso: cifra del hero sobre negro
+$danger: #a52836; // rojo UPB: errores, agotado, eliminar, notificaciones
 
 // --- Estado ---
-$sage: #4f6b4a; // verde sobrio: "en stock"
-$danger: #cc2b2b; // rojo de alerta: agotado / eliminar / error
+$sage: #5b7c6a; // verde apagado: "en stock"
 
-$line: rgba(26, 26, 26, 0.12);
+$line: rgba(47, 42, 38, 0.1);
 
 $radius-sm: 12px;
 $radius: 18px;
@@ -34,7 +36,7 @@ $tabbar-h: 76px;
 $topbar-h: 60px;
 $device-w: 430px;
 
-$shadow: 0 10px 30px rgba(26, 26, 26, 0.08);
-$shadow-strong: 0 16px 40px rgba(26, 26, 26, 0.16);
+$shadow: 0 10px 30px rgba(47, 42, 38, 0.08);
+$shadow-strong: 0 16px 40px rgba(47, 42, 38, 0.16);
 
 $font: 'Outfit', 'Segoe UI', sans-serif;
