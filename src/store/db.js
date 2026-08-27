@@ -393,8 +393,9 @@ export const db = {
     }
   },
 
-  appendProducts(products) {
-    const session = this.getSession()
+  appendProducts(products, userId) {
+    const ownerId = userId || this.getSession()?.id
+    if (!ownerId) return
     const all = read(KEYS.products, [])
     write(
       KEYS.products,
@@ -403,20 +404,30 @@ export const db = {
         ...products.map((p) => ({
           ...p,
           id: uid(),
-          userId: session.id,
+          userId: ownerId,
           createdAt: Date.now(),
         })),
       ],
     )
   },
 
-  appendSales(sales) {
-    const session = this.getSession()
+  appendSales(sales, userId) {
+    const ownerId = userId || this.getSession()?.id
+    if (!ownerId) return
     const all = read(KEYS.sales, [])
     write(
       KEYS.sales,
-      [...all, ...sales.map((s) => ({ ...s, id: uid(), userId: session.id }))],
+      [...all, ...sales.map((s) => ({ ...s, id: uid(), userId: ownerId }))],
     )
+  },
+
+  adjustStock(id, amount) {
+    const all = read(KEYS.products, [])
+    const index = all.findIndex((p) => p.id === id)
+    if (index < 0) return
+    all[index].stock = Math.max(0, Number(all[index].stock) + Number(amount))
+    all[index].updatedAt = Date.now()
+    write(KEYS.products, all)
   },
 
   saveUser(user) {

@@ -1,5 +1,5 @@
 import { db } from '../store/db.js'
-import { DEMO, ensureDemoAccount } from '../store/seed.js'
+import { ADMIN, DEMO, ensureAdminAccount, ensureDemoAccount, ensureTeam } from '../store/seed.js'
 import { logoMark } from '../icons.js'
 import { toast } from '../components/toast.js'
 import { navigate } from '../navigate.js'
@@ -18,6 +18,7 @@ export default {
           <label>Clave<input type="password" name="password" autocomplete="current-password" required placeholder="••••••••" /></label>
           <button class="btn btn--primary btn--block" type="submit">Entrar</button>
           <button class="btn btn--ghost btn--block" type="button" id="demo-btn">Probar cuenta demo</button>
+          <button class="btn btn--ghost btn--block" type="button" id="admin-btn">Entrar como administrador</button>
         </form>
         <p class="auth__swap">¿Aún no tienes cuenta? <a href="#/registro">Crear cuenta</a></p>
       </section>
@@ -28,7 +29,10 @@ export default {
       event.preventDefault()
       const data = new FormData(event.target)
       try {
-        db.login(String(data.get('email')), String(data.get('password')))
+        const email = String(data.get('email'))
+        const password = String(data.get('password'))
+        if (email.trim().toLowerCase() === ADMIN.email) ensureTeam()
+        db.login(email, password)
         navigate('/inicio')
       } catch (error) {
         toast(error.message, 'error')
@@ -38,6 +42,12 @@ export default {
       ensureDemoAccount()
       db.login(DEMO.email, DEMO.password)
       toast('Entraste con la cuenta demo')
+      navigate('/inicio')
+    })
+    document.getElementById('admin-btn').addEventListener('click', () => {
+      ensureAdminAccount()
+      db.login(ADMIN.email, ADMIN.password)
+      toast('Entraste como administrador')
       navigate('/inicio')
     })
   },

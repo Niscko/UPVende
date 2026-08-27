@@ -38,7 +38,7 @@ function filterSales(range) {
 
 function renderGroups(sales) {
   if (!sales.length) {
-    return `<div class="empty"><p>No hay ventas en este rango.</p><a class="btn btn--primary" href="#/vender">Registrar venta</a></div>`
+    return `<div class="empty"><p>No hay ventas en este rango.</p>${db.isAdmin() ? '' : '<a class="btn btn--primary" href="#/vender">Registrar venta</a>'}</div>`
   }
   const groups = {}
   sales.forEach((sale) => {
@@ -51,7 +51,7 @@ function renderGroups(sales) {
       ([day, items]) => `
       <div class="section-head"><h3>${day}</h3><span>${formatMoney(items.reduce((s, i) => s + i.total, 0))}</span></div>
       <div class="list">
-        ${items.map((sale) => `<a class="row-card" href="#/historial/${sale.id}"><div class="row-card__icon">${icons.cart}</div><div><strong>${formatMoney(sale.total)}</strong><p class="muted">${formatTime(sale.createdAt)} · ${sale.items.map((i) => `${i.qty}× ${escapeHtml(i.name)}`).join(', ')}</p></div>${icons.chevron}</a>`).join('')}
+        ${items.map((sale) => `<a class="row-card" href="#/historial/${sale.id}"><div class="row-card__icon">${icons.cart}</div><div><strong>${formatMoney(sale.total)}</strong><p class="muted">${formatTime(sale.createdAt)}${db.isAdmin() ? ` · ${escapeHtml(sale.workerName)}` : ''} · ${sale.items.map((i) => `${i.qty}× ${escapeHtml(i.name)}`).join(', ')}</p></div>${icons.chevron}</a>`).join('')}
       </div>
     `,
     )

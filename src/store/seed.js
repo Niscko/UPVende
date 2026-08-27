@@ -6,6 +6,11 @@ export const DEMO = {
   password: 'demo123',
 }
 
+export const ADMIN = {
+  email: 'admin@upventa.app',
+  password: 'admin123',
+}
+
 const sampleProducts = [
   { name: 'Brownie de chocolate', category: 'comida', price: 8000, stock: 12, minStock: 4, unit: 'und' },
   { name: 'Cheesecake de frutos', category: 'comida', price: 12000, stock: 6, minStock: 3, unit: 'und' },
@@ -17,62 +22,186 @@ const sampleProducts = [
   { name: 'Scrunchie pack x3', category: 'accesorios', price: 9000, stock: 20, minStock: 6, unit: 'paq' },
 ]
 
+const cafeProducts = [
+  { name: 'Tinto', category: 'comida', price: 2500, stock: 40, minStock: 10, unit: 'und' },
+  { name: 'Cappuccino', category: 'comida', price: 6000, stock: 18, minStock: 5, unit: 'und' },
+  { name: 'Almojábana', category: 'comida', price: 3500, stock: 8, minStock: 6, unit: 'und' },
+  { name: 'Brownie de café', category: 'comida', price: 5000, stock: 2, minStock: 4, unit: 'und' },
+]
+
+const stickerProducts = [
+  { name: 'Sticker laptop UPB', category: 'accesorios', price: 4000, stock: 30, minStock: 8, unit: 'und' },
+  { name: 'Pack x5 frases', category: 'accesorios', price: 15000, stock: 6, minStock: 3, unit: 'paq' },
+  { name: 'Pin esmaltado', category: 'accesorios', price: 12000, stock: 4, minStock: 4, unit: 'und' },
+]
+
 export function sampleCatalog() {
   return sampleProducts.map((p) => ({ ...p }))
 }
 
-export function ensureDemoAccount() {
+function ensureUser({ name, email, password, business, role }) {
   const users = db.getUsers()
-  let user = users.find((u) => u.email === DEMO.email)
+  let user = users.find((u) => u.email === email)
   if (!user) {
     user = {
       id: uid(),
-      name: 'Camila Restrepo',
-      email: DEMO.email,
-      password: DEMO.password,
-      business: 'Dulce & Tela',
+      name,
+      email,
+      password,
+      business,
+      role,
       createdAt: Date.now(),
     }
     db.saveUser(user)
+    return user
   }
-  db.setSession(user)
-  if (db.products().length === 0) {
-    db.appendProducts(sampleCatalog())
-    const products = db.products()
-    const brownie = products.find((p) => p.name.includes('Brownie'))
-    const galletas = products.find((p) => p.name.includes('Galletas'))
-    const aretes = products.find((p) => p.name.includes('Aretes'))
-    const now = Date.now()
-    const sales = []
-    if (brownie && galletas) {
-      sales.push({
-        items: [
-          { productId: brownie.id, name: brownie.name, qty: 2, unitPrice: brownie.price, subtotal: brownie.price * 2 },
-          { productId: galletas.id, name: galletas.name, qty: 1, unitPrice: galletas.price, subtotal: galletas.price },
-        ],
-        total: brownie.price * 2 + galletas.price,
-        units: 3,
-        note: 'Pedido WhatsApp',
-        createdAt: now - 1000 * 60 * 40,
-      })
-    }
-    if (aretes) {
-      sales.push({
-        items: [
-          { productId: aretes.id, name: aretes.name, qty: 1, unitPrice: aretes.price, subtotal: aretes.price },
-        ],
-        total: aretes.price,
-        units: 1,
-        note: '',
-        createdAt: now - 1000 * 60 * 12,
-      })
-    }
-    if (sales.length) {
-      db.appendSales(sales)
-      if (brownie) db.addStock(brownie.id, -2)
-      if (galletas) db.addStock(galletas.id, -1)
-      if (aretes) db.addStock(aretes.id, -1)
-    }
+  if (user.role !== role) {
+    user = { ...user, role }
+    db.updateUser(user)
   }
   return user
+}
+
+function seedSales(userId, find, recipes, now) {
+  const sales = recipes
+    .map((recipe) => {
+      const items = recipe.items
+        .map((line) => {
+          const product = find(line.match)
+          if (!product) return null
+          return {
+            productId: product.id,
+            name: product.name,
+            qty: line.qty,
+            unitPrice: product.price,
+            subtotal: product.price * line.qty,
+          }
+        })
+        .filter(Boolean)
+      if (!items.length) return null
+      return {
+        items,
+        total: items.reduce((sum, i) => sum + i.subtotal, 0),
+        units: items.reduce((sum, i) => sum + i.qty, 0),
+        note: recipe.note || '',
+        createdAt: now - recipe.ago,
+      }
+    })
+    .filter(Boolean)
+  if (sales.length) db.appendSales(sales, userId)
+  recipes.forEach((recipe) => {
+    recipe.items.forEach((line) => {
+      const product = find(line.match)
+      if (product) db.adjustStock(product.id, -line.qty)
+    })
+  })
+}
+
+function seedWorker(spec) {
+  const user = ensureUser(spec)
+  if (db.productsOf(user.id).length === 0) {
+    db.appendProducts(spec.catalog.map((p) => ({ ...p })), user.id)
+    const products = db.productsOf(user.id)
+    const find = (match) => products.find((p) => p.name.includes(match))
+    seedSales(user.id, find, spec.sales, Date.now())
+  }
+  if (!db.dayGoalOf(user.id) && spec.goal) db.setDayGoalFor(user.id, spec.goal)
+  return user
+}
+
+export function ensureTeam() {
+  const admin = ensureUser({
+    name: 'Laura Vélez',
+    email: ADMIN.email,
+    password: ADMIN.password,
+    business: 'Coordinación campus',
+    role: 'admin',
+  })
+
+  const camila = seedWorker({
+    name: 'Camila Restrepo',
+    email: DEMO.email,
+    password: DEMO.password,
+    business: 'Dulce & Tela',
+    role: 'worker',
+    catalog: sampleProducts,
+    goal: 50000,
+    sales: [
+      {
+        ago: 1000 * 60 * 40,
+        note: 'Pedido WhatsApp',
+        items: [
+          { match: 'Brownie', qty: 2 },
+          { match: 'Galletas', qty: 1 },
+        ],
+      },
+      {
+        ago: 1000 * 60 * 12,
+        note: '',
+        items: [{ match: 'Aretes', qty: 1 }],
+      },
+    ],
+  })
+
+  const andres = seedWorker({
+    name: 'Andrés Mora',
+    email: 'andres@upventa.app',
+    password: DEMO.password,
+    business: 'Café del 9',
+    role: 'worker',
+    catalog: cafeProducts,
+    goal: 60000,
+    sales: [
+      {
+        ago: 1000 * 60 * 90,
+        note: 'Mesa 2',
+        items: [
+          { match: 'Cappuccino', qty: 2 },
+          { match: 'Tinto', qty: 1 },
+        ],
+      },
+      {
+        ago: 1000 * 60 * 25,
+        note: '',
+        items: [
+          { match: 'Almojábana', qty: 3 },
+          { match: 'Brownie', qty: 1 },
+        ],
+      },
+    ],
+  })
+
+  const valentina = seedWorker({
+    name: 'Valentina Ruiz',
+    email: 'vale@upventa.app',
+    password: DEMO.password,
+    business: 'Stickers UPB',
+    role: 'worker',
+    catalog: stickerProducts,
+    goal: 40000,
+    sales: [
+      {
+        ago: 1000 * 60 * 55,
+        note: 'Feria de emprendimiento',
+        items: [
+          { match: 'Sticker', qty: 4 },
+          { match: 'Pack', qty: 1 },
+        ],
+      },
+    ],
+  })
+
+  return { admin, camila, andres, valentina }
+}
+
+export function ensureDemoAccount() {
+  const { camila } = ensureTeam()
+  db.setSession(camila)
+  return camila
+}
+
+export function ensureAdminAccount() {
+  const { admin } = ensureTeam()
+  db.setSession(admin)
+  return admin
 }

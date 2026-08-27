@@ -22,7 +22,7 @@ export function renderHeader({ title, back, path } = {}) {
           ${icons.bell}
           ${alerts ? `<span class="badge-dot">${alerts}</span>` : ''}
         </a>
-        <a class="avatar" href="#/creditos" aria-label="Créditos">
+        <a class="avatar" href="#/creditos" aria-label="${session?.role === 'admin' ? 'Perfil administrador' : 'Créditos'}">
           ${escapeHtml((session?.name || 'U').slice(0, 1))}
         </a>
       </div>
