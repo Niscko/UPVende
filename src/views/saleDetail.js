@@ -10,7 +10,7 @@ export default {
     return `
       <section class="page">
         <article class="hero-card hero-card--plain">
-          <p class="eyebrow">${formatDateTime(sale.createdAt)}${db.isAdmin() && sale.workerName ? ` · ${escapeHtml(sale.workerName)}` : ''}</p>
+          <p class="eyebrow">${formatDateTime(sale.createdAt)}</p>
           <strong>${formatMoney(sale.total)}</strong>
           <div class="hero-card__meta">
             <span>${sale.units} unidades</span>
@@ -25,7 +25,7 @@ export default {
           }).join('')}
         </div>
         ${sale.note ? `<p class="hint">Nota: ${escapeHtml(sale.note)}</p>` : ''}
-        ${db.isAdmin() ? '' : '<a class="btn btn--primary btn--block" href="#/vender">Nueva venta</a>'}
+        <a class="btn btn--primary btn--block" href="#/vender">Nueva venta</a>
       </section>
     `
   },

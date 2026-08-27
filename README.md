@@ -16,19 +16,10 @@ npm run build
 npm run preview
 ```
 
-## Cuentas demo
-
-Trabajador (Camila):
+## Cuenta demo
 
 - Correo: `demo@upventa.app`
 - Clave: `demo123`
-
-Administrador (Laura):
-
-- Correo: `admin@upventa.app`
-- Clave: `admin123`
-
-El perfil admin ve el recaudo, la meta, el inventario y las ventas de cada trabajador.
 
 ## Pantallas
 

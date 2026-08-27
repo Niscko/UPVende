@@ -5,8 +5,6 @@ import { renderNav } from './components/nav.js'
 import Login from './views/login.js'
 import Register from './views/register.js'
 import Home from './views/home.js'
-import AdminHome from './views/adminHome.js'
-import AdminWorker from './views/adminWorker.js'
 import Products from './views/products.js'
 import ProductForm from './views/productForm.js'
 import Sale from './views/sale.js'
@@ -17,16 +15,12 @@ import SaleDetail from './views/saleDetail.js'
 import Credits from './views/credits.js'
 
 const publicRoutes = ['/login', '/registro']
-const workerOnly = ['/vender', '/productos']
 
 function matchRoute(path) {
-  if (path === '/' || path === '') return { view: db.isAdmin() ? AdminHome : Home, path: '/inicio', params: {} }
+  if (path === '/' || path === '') return { view: Home, path: '/inicio', params: {} }
   if (path === '/login') return { view: Login, path, params: {}, public: true }
   if (path === '/registro') return { view: Register, path, params: {}, public: true }
-  if (path === '/inicio') return { view: db.isAdmin() ? AdminHome : Home, path, params: {} }
-  if (path.startsWith('/equipo/')) {
-    return { view: AdminWorker, path: '/inicio', params: { id: path.split('/')[2] } }
-  }
+  if (path === '/inicio') return { view: Home, path, params: {} }
   if (path === '/productos') return { view: Products, path, params: {} }
   if (path.startsWith('/productos/')) {
     return { view: ProductForm, path: '/productos', params: { id: path.split('/')[2] } }
@@ -39,7 +33,7 @@ function matchRoute(path) {
     return { view: SaleDetail, path: '/historial', params: { id: path.split('/')[2] } }
   }
   if (path === '/creditos') return { view: Credits, path, params: {} }
-  return { view: db.isAdmin() ? AdminHome : Home, path: '/inicio', params: {} }
+  return { view: Home, path: '/inicio', params: {} }
 }
 
 export function startRouter() {
@@ -52,14 +46,6 @@ export function startRouter() {
       return
     }
     if (session && publicRoutes.includes(path)) {
-      navigate('/inicio')
-      return
-    }
-    if (session?.role === 'admin' && (workerOnly.includes(path) || path.startsWith('/productos/'))) {
-      navigate('/inicio')
-      return
-    }
-    if (session?.role !== 'admin' && path.startsWith('/equipo')) {
       navigate('/inicio')
       return
     }

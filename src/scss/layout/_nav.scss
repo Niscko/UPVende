@@ -13,10 +13,6 @@
   z-index: 8;
 }
 
-.tabbar--admin {
-  grid-template-columns: repeat(3, 1fr);
-}
-
 .tab {
   @include flex-center;
   flex-direction: column;

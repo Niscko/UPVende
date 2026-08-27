@@ -19,7 +19,6 @@ export default {
           <p><strong>${escapeHtml(session.name)}</strong></p>
           <p class="muted">${escapeHtml(session.business)}</p>
           <p class="muted">${escapeHtml(session.email)}</p>
-          <p class="muted">${session.role === 'admin' ? 'Perfil administrador · ves el recaudo y el inventario de cada trabajador.' : 'Perfil trabajador · registras tus ventas e inventario.'}</p>
         </article>
         <article class="card">
           <h3>Autores</h3>
