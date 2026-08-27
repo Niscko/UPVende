@@ -4,7 +4,7 @@ import { escapeHtml } from '../utils.js'
 
 export function renderHeader({ title, back, path } = {}) {
   const session = db.getSession()
-  const alerts = db.lowStock().length
+  const alerts = db.unseenAlerts().length
   const onAlerts = path === '/alertas'
   return `
     <header class="topbar">

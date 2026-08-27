@@ -5,6 +5,7 @@ const KEYS = {
   session: 'upventa_session',
   products: 'upventa_products',
   sales: 'upventa_sales',
+  alertsSeen: 'upventa_alerts_seen',
 }
 
 function read(key, fallback) {
@@ -136,6 +137,26 @@ export const db = {
 
   lowStock() {
     return this.products().filter((p) => p.stock <= p.minStock)
+  },
+
+  // --- Alertas "vistas" -------------------------------------------------
+  // Se guarda la lista de productos en alerta que el usuario ya revisó.
+  // Solo cuentan como "nuevas" las alertas que aún no ha visto.
+  _seenAlertIds() {
+    const low = new Set(this.lowStock().map((p) => p.id))
+    const stored = read(KEYS.alertsSeen, [])
+    const pruned = stored.filter((id) => low.has(id)) // descarta las que ya no están en alerta
+    if (pruned.length !== stored.length) write(KEYS.alertsSeen, pruned)
+    return new Set(pruned)
+  },
+
+  unseenAlerts() {
+    const seen = this._seenAlertIds()
+    return this.lowStock().filter((p) => !seen.has(p.id))
+  },
+
+  markAlertsSeen() {
+    write(KEYS.alertsSeen, this.lowStock().map((p) => p.id))
   },
 
   sales() {

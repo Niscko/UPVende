@@ -19,6 +19,8 @@ export default {
     `
   },
   afterRender() {
+    db.markAlertsSeen() // el usuario ya revisó las alertas actuales
+
     document.getElementById('alerts-list')?.addEventListener('click', (event) => {
       const btn = event.target.closest('[data-restock]')
       if (!btn) return
