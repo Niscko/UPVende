@@ -91,6 +91,10 @@
   border: 1px solid $line;
   border-radius: 14px;
 
+  &:focus-within {
+    border-color: $gold;
+  }
+
   span {
     color: $umber;
     font-weight: 700;
@@ -106,6 +110,12 @@
     appearance: textfield;
     user-select: text;
     -webkit-user-select: text;
+    outline: none;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
