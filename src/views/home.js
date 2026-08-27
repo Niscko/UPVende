@@ -49,7 +49,6 @@ export default {
             ? `<div class="empty empty--soft"><p>Empieza cargando tu inventario o usa un catálogo de ejemplo.</p><button class="btn btn--ghost" id="seed-catalog" type="button">Cargar catálogo demo</button></div>`
             : `<div class="section-head"><h3>Inventario</h3><a href="#/productos">Abrir</a></div><div class="chips">${products.slice(0, 4).map((p) => `<span class="chip chip--${stockStatus(p)}">${escapeHtml(p.name)} · ${p.stock}</span>`).join('')}</div>`
         }
-        <p class="hint">La relación producto ↔️ venta se guarda en cada registro: cantidad, precio y stock restante.</p>
       </section>
     `
   },

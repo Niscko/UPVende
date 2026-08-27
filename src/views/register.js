@@ -9,8 +9,8 @@ export default {
       <section class="auth">
         <div class="auth__brand">
           ${logoMark}
-          <h1>Crea tu caja</h1>
-          <p>Simulamos el registro con localStorage. No se usa internet.</p>
+          <h1>Crea tu cuenta</h1>
+          <p>Regístrate para llevar el control de tu inventario y tus ventas.</p>
         </div>
         <form class="card form" id="register-form">
           <label>Tu nombre<input type="text" name="name" required maxlength="40" placeholder="Camila Restrepo" /></label>
