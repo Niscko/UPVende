@@ -60,6 +60,14 @@
   font-weight: 700;
 }
 
+.stock-entry {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  font-weight: 600;
+  color: $ink;
+}
+
 .modal__actions {
   display: grid;
   grid-template-columns: 1fr 1fr;

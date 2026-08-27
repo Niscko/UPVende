@@ -101,6 +101,47 @@
   }
 }
 
+.row-card--action {
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+
+  .row-card__link {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    color: inherit;
+  }
+
+  .row-card__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row-card__add {
+    flex: 0 0 auto;
+    align-self: stretch;
+    width: 54px;
+    display: grid;
+    place-items: center;
+    background: $ink;
+    color: $bone;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      color: currentColor;
+    }
+
+    &:active {
+      opacity: 0.85;
+    }
+  }
+}
+
 .row-card--static {
   align-items: center;
 }
