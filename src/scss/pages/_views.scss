@@ -146,4 +146,19 @@
       margin: 4px 0;
     }
   }
+
+  .authors li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 0;
+
+    & + li {
+      border-top: 1px solid $line;
+    }
+
+    .muted {
+      font-size: 0.85rem;
+    }
+  }
 }
