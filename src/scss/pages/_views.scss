@@ -107,6 +107,22 @@
   }
 }
 
+.price-btn {
+  margin-top: 6px;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $accent-dark;
+  text-decoration: underline;
+}
+
+.price-custom {
+  color: $accent;
+  font-weight: 700;
+}
+
 .bars {
   display: grid;
   gap: 12px;
